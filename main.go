@@ -60,6 +60,37 @@ func (a Article) Link() string {
 	return showURL.String()
 }
 
+// RouteName2URL 路由名字转 url
+func RouteName2URL(routeName string, pairs ...string) string {
+	url, err := router.Get(routeName).URL(pairs...)
+	if err != nil {
+		checkError(err)
+		return ""
+	}
+
+	return url.String()
+}
+
+// Int64ToString int64 类型转 string 类型
+func Int64ToString(n int64) string {
+	return strconv.FormatInt(n, 10)
+}
+
+// Delete 删除文章
+func (a Article) Delete() (int64, error) {
+	rs, err := db.Exec("DELETE FROM articles WHERE id = " + strconv.FormatInt(a.ID, 10))
+	if err != nil {
+		return 0, nil
+	}
+
+	// 更新成功，跳转到文章详情页
+	if n, _ := rs.RowsAffected(); n > 0 {
+		return n, nil
+	}
+
+	return 0, nil
+}
+
 // articlesShowHandler 文章详情
 func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取 url 参数
@@ -82,7 +113,12 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// 4. 读取成功
-		tmpl, err := template.ParseFiles("resources/views/articles/show.gohtml")
+		tmpl, err := template.New("show.gohtml").
+			Funcs(template.FuncMap{
+				"RouteName2URL": RouteName2URL,
+				"Int64ToString": Int64ToString,
+			}).
+			ParseFiles("resources/views/articles/show.gohtml")
 		checkError(err)
 
 		tmpl.Execute(w, article)
@@ -411,6 +447,46 @@ func createTables() {
 	checkError(err)
 }
 
+// articlesDeleteHandler 删除文章
+func articlesDeleteHandler(w http.ResponseWriter, r *http.Request) {
+	// 1. 获取文章id
+	id := getRouteVariable("id", r)
+
+	// 2. 读取对应的文章数据
+	article, err := getArticleByID(id)
+
+	// 3. 如果出现错误
+	if err != nil {
+		if err == sql.ErrNoRows {
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprint(w, "404 not found")
+		} else {
+			checkError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 internal server error")
+		}
+	} else {
+		// 4. 未出现问题，执行删除
+		rowsAffected, err := article.Delete()
+
+		if err != nil {
+			checkError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 internal server err")
+		} else {
+			if rowsAffected > 0 {
+				// 重定向到文章列表页
+				indexURL, _ := router.Get("articles.index").URL()
+				http.Redirect(w, r, indexURL.String(), http.StatusFound)
+			} else {
+				// Edge case
+				w.WriteHeader(http.StatusNotFound)
+				fmt.Fprint(w, "404 not found")
+			}
+		}
+	}
+}
+
 func main() {
 	// 初始化数据库连接
 	initDB()
@@ -435,7 +511,9 @@ func main() {
 	// 博客编辑页面
 	router.HandleFunc("/articles/{id:[0-9]+}/edit", articlesEditHandler).Methods("GET").Name("articles.edit")
 	// 编辑保存
-	router.HandleFunc("/articles/{id:[0-9]+}/edit", articlesUpdateHandler).Methods("POST").Name("articles.update")
+	router.HandleFunc("/articles/{id:[0-9]+}", articlesUpdateHandler).Methods("POST").Name("articles.update")
+	// 删除文章
+	router.HandleFunc("/articles/{id:[0-9]+}/delete", articlesDeleteHandler).Methods("POST").Name("articles.delete")
 
 	// 自定义 404 页面
 	router.NotFoundHandler = http.HandlerFunc(notFoundHandler)
