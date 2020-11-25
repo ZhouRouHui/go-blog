@@ -22,34 +22,34 @@ var router = mux.NewRouter()
 // 全局数据库对象
 var db *sql.DB
 
-// 首页
+// homeHandler 首页
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(w, "<h1>Hello, 欢迎来到 goblog！</h1>")
 }
 
-// about 页面
+// aboutHandler about 页面处理
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(w, "此博客是用以记录编程笔记，如您有反馈或建议，请联系 "+
 		"<a href=\"mailto:summer@example.com\">summer@example.com</a>")
 }
 
-// 404 not found 页面
+// notFoundHandler 404 not found 页面处理
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprint(w, "<h1>请求页面未找到 :(</h1><p>如有疑惑，请联系我们。</p>")
 }
 
-// 文章详情
+// articlesShowHandler 文章详情
 func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r) // Vars() 返回当前请求的路由变量
 	id := vars["id"]
 	fmt.Fprint(w, "文章 ID："+id)
 }
 
-// 文章列表
+// articlesIndexHandler 文章列表
 func articlesIndexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "访问文章列表")
 }
@@ -61,7 +61,7 @@ type ArticlesFormData struct {
 	Errors      map[string]string
 }
 
-// 创建文章
+// articlesStoreHandler 创建文章
 func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.PostFormValue("title")
 	body := r.PostFormValue("body")
@@ -106,6 +106,7 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// forceHTMLMiddleware 添加返回头标识中间件
 func forceHTMLMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 1.设置标头
@@ -115,6 +116,7 @@ func forceHTMLMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+// removeTrailingSlash 删除路由后面的斜杠
 func removeTrailingSlash(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 1.除首页之外，移除所有请求路径后面的斜杠
@@ -127,7 +129,7 @@ func removeTrailingSlash(next http.Handler) http.Handler {
 	})
 }
 
-// 博文表单页面
+// articlesCreateHandler 博文表单页面
 func articlesCreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	storeURL, _ := router.Get("articles.store").URL()
@@ -144,7 +146,7 @@ func articlesCreateHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, data)
 }
 
-// 初始化数据库
+// initDB 初始化数据库
 func initDB() {
 	var err error
 
@@ -173,15 +175,29 @@ func initDB() {
 	checkError(err)
 }
 
+// checkError 错误检查
 func checkError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
+// createTables 创建数据表
+func createTables() {
+	createArticlesSQL := `CREATE TABLE IF NOT EXISTS articles(
+		id bigint(20) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		title varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+		body longtext COLLATE utf8mb4_unicode_ci
+	);`
+
+	_, err := db.Exec(createArticlesSQL)
+	checkError(err)
+}
+
 func main() {
 	// 初始化数据库连接
 	initDB()
+	createTables()
 
 	// router := mux.NewRouter().StrictSlash(true)
 	router.StrictSlash(true)
