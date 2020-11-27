@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"goblog/pkg/logger"
 	"goblog/pkg/route"
+	"goblog/pkg/types"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -61,11 +62,6 @@ func (a Article) Link() string {
 	return showURL.String()
 }
 
-// Int64ToString int64 类型转 string 类型
-func Int64ToString(n int64) string {
-	return strconv.FormatInt(n, 10)
-}
-
 // Delete 删除文章
 func (a Article) Delete() (int64, error) {
 	rs, err := db.Exec("DELETE FROM articles WHERE id = " + strconv.FormatInt(a.ID, 10))
@@ -106,7 +102,7 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.New("show.gohtml").
 			Funcs(template.FuncMap{
 				"RouteName2URL": route.Name2URL,
-				"Int64ToString": Int64ToString,
+				"Int64ToString": types.Int64ToString,
 			}).
 			ParseFiles("resources/views/articles/show.gohtml")
 		logger.LogError(err)
