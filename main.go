@@ -84,7 +84,7 @@ func (a Article) Delete() (int64, error) {
 // articlesShowHandler 文章详情
 func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取 url 参数
-	id := getRouteVariable("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	// 2. 读取对应的文章数据
 	article, err := getArticleByID(id)
@@ -115,12 +115,6 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// getRouteVariable 获取路由中的参数
-func getRouteVariable(parameterName string, r *http.Request) string {
-	vars := mux.Vars(r) // Vars() 返回当前请求的路由变量
-	return vars[parameterName]
-}
-
 // getArticleByID 通过 id 获取文章
 func getArticleByID(id string) (Article, error) {
 	article := Article{}
@@ -133,7 +127,7 @@ func getArticleByID(id string) (Article, error) {
 // articlesEditHandler 文章编辑页面
 func articlesEditHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取 url 参数
-	id := getRouteVariable("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	// 2. 读取对应的文章数据
 	article, err := getArticleByID(id)
@@ -169,7 +163,7 @@ func articlesEditHandler(w http.ResponseWriter, r *http.Request) {
 // articlesUpdateHandler 更新文章
 func articlesUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取路由参数
-	id := getRouteVariable("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	// 2. 获取模型数据
 	article, err := getArticleByID(id)
@@ -440,7 +434,7 @@ func createTables() {
 // articlesDeleteHandler 删除文章
 func articlesDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取文章id
-	id := getRouteVariable("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	// 2. 读取对应的文章数据
 	article, err := getArticleByID(id)
