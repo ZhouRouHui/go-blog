@@ -15,3 +15,11 @@ func Get(idstr string) (Article, error) {
 
 	return article, nil
 }
+
+// GetAll 获取全部文章
+func GetAll() (articles []Article, err error) {
+	if err = model.DB.Find(&articles).Error; err != nil {
+		return articles, err
+	}
+	return articles, nil
+}
