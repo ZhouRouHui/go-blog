@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"goblog/pkg/route"
 	"log"
 	"net/http"
 	"net/url"
@@ -18,7 +19,7 @@ import (
 )
 
 // 全局 router 对象
-var router = mux.NewRouter()
+var router *mux.Router
 
 // 全局数据库对象
 var db *sql.DB
@@ -58,17 +59,6 @@ func (a Article) Link() string {
 	}
 
 	return showURL.String()
-}
-
-// RouteName2URL 路由名字转 url
-func RouteName2URL(routeName string, pairs ...string) string {
-	url, err := router.Get(routeName).URL(pairs...)
-	if err != nil {
-		checkError(err)
-		return ""
-	}
-
-	return url.String()
 }
 
 // Int64ToString int64 类型转 string 类型
@@ -115,7 +105,7 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 		// 4. 读取成功
 		tmpl, err := template.New("show.gohtml").
 			Funcs(template.FuncMap{
-				"RouteName2URL": RouteName2URL,
+				"RouteName2URL": route.Name2URL,
 				"Int64ToString": Int64ToString,
 			}).
 			ParseFiles("resources/views/articles/show.gohtml")
@@ -491,6 +481,10 @@ func main() {
 	// 初始化数据库连接
 	initDB()
 	createTables()
+
+	// 路由初始化
+	route.Initialize()
+	router = route.Router
 
 	// router := mux.NewRouter().StrictSlash(true)
 	router.StrictSlash(true)
