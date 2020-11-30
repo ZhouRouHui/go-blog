@@ -46,7 +46,6 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 			}).
 			ParseFiles("resources/views/articles/show.gohtml")
 		logger.LogError(err)
-
 		tmpl.Execute(w, article)
 	}
 }
@@ -237,6 +236,46 @@ func (*ArticlesController) Update(w http.ResponseWriter, r *http.Request) {
 			logger.LogError(err)
 
 			tmpl.Execute(w, data)
+		}
+	}
+}
+
+// Delete 删除文章
+func (*ArticlesController) Delete(w http.ResponseWriter, r *http.Request) {
+	// 1. 获取文章id
+	id := route.GetRouteVariable("id", r)
+
+	// 2. 读取对应的文章数据
+	_article, err := article.Get(id)
+
+	// 3. 如果出现错误
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprint(w, "404 not found")
+		} else {
+			logger.LogError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 internal server error")
+		}
+	} else {
+		// 4. 未出现问题，执行删除
+		rowsAffected, err := _article.Delete()
+
+		if err != nil {
+			logger.LogError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 internal server err")
+		} else {
+			if rowsAffected > 0 {
+				// 重定向到文章列表页
+				indexURL := route.Name2URL("articles.index")
+				http.Redirect(w, r, indexURL, http.StatusFound)
+			} else {
+				// Edge case
+				w.WriteHeader(http.StatusNotFound)
+				fmt.Fprint(w, "404 not found")
+			}
 		}
 	}
 }
