@@ -146,3 +146,97 @@ func (*ArticlesController) Store(w http.ResponseWriter, r *http.Request) {
 		tmpl.Execute(w, data)
 	}
 }
+
+// Edit 编辑页面
+func (*ArticlesController) Edit(w http.ResponseWriter, r *http.Request) {
+	// 1. 获取 url 参数
+	id := route.GetRouteVariable("id", r)
+
+	// 2. 读取对应的文章数据
+	article, err := article.Get(id)
+
+	// 3. 如果出现错误
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			// 3.1 数据未找到
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprint(w, "404 文章未找到")
+		} else {
+			// 3.2 数据库错误
+			logger.LogError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 服务器内部错误")
+		}
+	} else {
+		// 4. 读取成功，显示表单
+		updateURL := route.Name2URL("articles.update", "id", id)
+		data := ArticlesFormData{
+			Title:  article.Title,
+			Body:   article.Body,
+			URL:    updateURL,
+			Errors: nil,
+		}
+		tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
+		logger.LogError(err)
+
+		tmpl.Execute(w, data)
+	}
+}
+
+// Update 编辑保存
+func (*ArticlesController) Update(w http.ResponseWriter, r *http.Request) {
+	// 1. 获取路由参数
+	id := route.GetRouteVariable("id", r)
+
+	// 2. 获取模型数据
+	_article, err := article.Get(id)
+
+	// 3. 错误判断
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprint(w, "404 not found")
+		} else {
+			logger.LogError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 internal server error")
+		}
+	} else {
+		// 请求数据校验
+		title := r.PostFormValue("title")
+		body := r.PostFormValue("body")
+
+		errors := validateArticleFormData(title, body)
+		if len(errors) == 0 {
+			// 数据校验成功，进行更新
+			_article.Title = title
+			_article.Body = body
+
+			rowsAffected, err := _article.Update()
+			if err != nil {
+				// 数据库错误
+				w.WriteHeader(http.StatusInternalServerError)
+				fmt.Fprint(w, "500 internal server error")
+			}
+			if rowsAffected > 0 {
+				showURL := route.Name2URL("articles.show", "id", id)
+				http.Redirect(w, r, showURL, http.StatusFound)
+			} else {
+				fmt.Fprint(w, "您没有做任何更改！")
+			}
+		} else {
+			// 数据校验有错误
+			updateURL := route.Name2URL("articles.updata", "id", id)
+			data := ArticlesFormData{
+				Title:  title,
+				Body:   body,
+				URL:    updateURL,
+				Errors: errors,
+			}
+			tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
+			logger.LogError(err)
+
+			tmpl.Execute(w, data)
+		}
+	}
+}

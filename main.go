@@ -10,7 +10,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"text/template"
 	"unicode/utf8"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -57,101 +56,6 @@ func getArticleByID(id string) (Article, error) {
 func getRouteVariable(parameterName string, r *http.Request) string {
 	vars := mux.Vars(r) // Vars() 返回当前请求的路由变量
 	return vars[parameterName]
-}
-
-// articlesEditHandler 文章编辑页面
-func articlesEditHandler(w http.ResponseWriter, r *http.Request) {
-	// 1. 获取 url 参数
-	id := getRouteVariable("id", r)
-
-	// 2. 读取对应的文章数据
-	article, err := getArticleByID(id)
-
-	// 3. 如果出现错误
-	if err != nil {
-		if err == sql.ErrNoRows {
-			// 3.1 数据未找到
-			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprint(w, "404 文章未找到")
-		} else {
-			// 3.2 数据库错误
-			logger.LogError(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprint(w, "500 服务器内部错误")
-		}
-	} else {
-		// 4. 读取成功，显示表单
-		updateURL, _ := router.Get("articles.update").URL("id", id)
-		data := ArticlesFormData{
-			Title:  article.Title,
-			Body:   article.Body,
-			URL:    updateURL,
-			Errors: nil,
-		}
-		tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
-		logger.LogError(err)
-
-		tmpl.Execute(w, data)
-	}
-}
-
-// articlesUpdateHandler 更新文章
-func articlesUpdateHandler(w http.ResponseWriter, r *http.Request) {
-	// 1. 获取路由参数
-	id := getRouteVariable("id", r)
-
-	// 2. 获取模型数据
-	article, err := getArticleByID(id)
-
-	// 3. 错误判断
-	if err != nil {
-		if err == sql.ErrNoRows {
-			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprint(w, "404 not found")
-		} else {
-			logger.LogError(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprint(w, "500 internal server error")
-		}
-	} else {
-		// 请求数据校验
-		title := r.PostFormValue("title")
-		body := r.PostFormValue("body")
-
-		errors := validateArticleFormData(title, body)
-		if len(errors) > 0 {
-			// 数据校验有错误
-			editURL, _ := router.Get("articles.edit").URL("id", id)
-			data := ArticlesFormData{
-				Title:  article.Title,
-				Body:   article.Body,
-				URL:    editURL,
-				Errors: errors,
-			}
-			tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
-			logger.LogError(err)
-
-			tmpl.Execute(w, data)
-		} else {
-			// 数据校验成功，进行更新
-			query := "UPDATE articles SET title = ?, body = ? WHERE id = ?"
-			rs, err := db.Exec(query, title, body, id)
-
-			if err != nil {
-				logger.LogError(err)
-				w.WriteHeader(http.StatusInternalServerError)
-				fmt.Fprint(w, "500 internal server error")
-			}
-
-			// 更新成功
-			if n, _ := rs.RowsAffected(); n > 0 {
-				showURL, _ := router.Get("articles.show").URL("id", id)
-				http.Redirect(w, r, showURL.String(), http.StatusFound)
-			} else {
-				fmt.Fprint(w, "您没有做任何修改!")
-			}
-		}
-	}
 }
 
 // ArticlesFormData 创建博文表单数据
@@ -257,10 +161,6 @@ func main() {
 	// router := mux.NewRouter().StrictSlash(true)
 	router.StrictSlash(true)
 
-	// 博客编辑页面
-	router.HandleFunc("/articles/{id:[0-9]+}/edit", articlesEditHandler).Methods("GET").Name("articles.edit")
-	// 编辑保存
-	router.HandleFunc("/articles/{id:[0-9]+}", articlesUpdateHandler).Methods("POST").Name("articles.update")
 	// 删除文章
 	router.HandleFunc("/articles/{id:[0-9]+}/delete", articlesDeleteHandler).Methods("POST").Name("articles.delete")
 
