@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e735a136-ed97-46f4-9289-5cb8c5d67319" name="Default Changelist" comment="" />
+    <list default="true" id="e735a136-ed97-46f4-9289-5cb8c5d67319" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/articles/index.gohtml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/articles/index.gohtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +19,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="6bc0b629-eb60-43cf-9022-877762c25ebf" />
   <component name="ProjectId" id="1kgD0s1RJrzlZtIHdlwBu5E7EGj" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -35,13 +44,15 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -70,6 +81,7 @@
       <option name="presentableId" value="Default" />
       <updated>1606113121322</updated>
       <workItem from="1606113122444" duration="3622000" />
+      <workItem from="1606897345268" duration="2889000" />
     </task>
     <servers />
   </component>
@@ -80,29 +92,43 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1868" height="292" key="GridCell.Tab.0.bottom" timestamp="1606117844010">
-      <screen x="1440" y="-78" width="1920" height="1080" />
+    <state width="1868" height="132" key="GridCell.Tab.0.bottom" timestamp="1606900654725">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
+    <state width="1868" height="132" key="GridCell.Tab.0.bottom/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900654725" />
     <state width="1868" height="292" key="GridCell.Tab.0.bottom/0.0.1440.900/1440.-78.1920.1080@1440.-78.1920.1080" timestamp="1606117844010" />
-    <state width="1868" height="292" key="GridCell.Tab.0.center" timestamp="1606117844008">
-      <screen x="1440" y="-78" width="1920" height="1080" />
+    <state width="1868" height="132" key="GridCell.Tab.0.center" timestamp="1606900654722">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
+    <state width="1868" height="132" key="GridCell.Tab.0.center/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900654722" />
     <state width="1868" height="292" key="GridCell.Tab.0.center/0.0.1440.900/1440.-78.1920.1080@1440.-78.1920.1080" timestamp="1606117844008" />
-    <state width="1868" height="292" key="GridCell.Tab.0.left" timestamp="1606117844007">
-      <screen x="1440" y="-78" width="1920" height="1080" />
+    <state width="1868" height="132" key="GridCell.Tab.0.left" timestamp="1606900654719">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
+    <state width="1868" height="132" key="GridCell.Tab.0.left/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900654719" />
     <state width="1868" height="292" key="GridCell.Tab.0.left/0.0.1440.900/1440.-78.1920.1080@1440.-78.1920.1080" timestamp="1606117844007" />
-    <state width="1868" height="292" key="GridCell.Tab.0.right" timestamp="1606117844009">
-      <screen x="1440" y="-78" width="1920" height="1080" />
+    <state width="1868" height="132" key="GridCell.Tab.0.right" timestamp="1606900654724">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
+    <state width="1868" height="132" key="GridCell.Tab.0.right/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900654724" />
     <state width="1868" height="292" key="GridCell.Tab.0.right/0.0.1440.900/1440.-78.1920.1080@1440.-78.1920.1080" timestamp="1606117844009" />
     <state x="1799" y="13" key="SettingsEditor" timestamp="1606114560644">
       <screen x="1440" y="-78" width="1920" height="1080" />
     </state>
     <state x="1799" y="13" key="SettingsEditor/0.0.1440.900/1440.-78.1920.1080@1440.-78.1920.1080" timestamp="1606114560644" />
-    <state width="625" height="500" key="SwitcherDM" timestamp="1606113644966">
-      <screen x="1440" y="-78" width="1920" height="1080" />
+    <state width="625" height="500" key="SwitcherDM" timestamp="1606898348131">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
+    <state width="625" height="500" key="SwitcherDM/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606898348131" />
     <state width="625" height="500" key="SwitcherDM/0.0.1440.900/1440.-78.1920.1080@1440.-78.1920.1080" timestamp="1606113644966" />
+    <state width="750" height="535" key="javadoc.popup" timestamp="1606900978625">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
+    </state>
+    <state width="750" height="535" key="javadoc.popup/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606897852356" />
+    <state width="750" height="535" key="javadoc.popup/0.23.1440.877/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900978625" />
+    <state x="296" y="-1032" width="838" height="1032" key="search.everywhere.popup" timestamp="1606900604826">
+      <screen x="-245" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="296" y="-1032" width="838" height="1032" key="search.everywhere.popup/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900604826" />
   </component>
 </project>
