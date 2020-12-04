@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"fmt"
@@ -57,16 +57,9 @@ func (*ArticlesController) Index(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ArticlesFormData 创建博文表单数据
-type ArticlesFormData struct {
-	Title, Body string
-	Article     article.Article
-	Errors      map[string]string
-}
-
 // Create 创建
 func (*ArticlesController) Create(w http.ResponseWriter, r *http.Request) {
-	view.Render(w, ArticlesFormData{}, "articles.create", "articles._form_field")
+	view.Render(w, view.D{}, "articles.create", "articles._form_field")
 }
 
 // validateArticleFormData 文章参数校验
@@ -108,10 +101,10 @@ func (*ArticlesController) Store(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, "创建文章失败")
 		}
 	} else {
-		view.Render(w, ArticlesFormData{
-			Title:  title,
-			Body:   body,
-			Errors: errors,
+		view.Render(w, view.D{
+			"Title":  title,
+			"Body":   body,
+			"Errors": errors,
 		}, "articles.store", "articles._form_field")
 	}
 }
@@ -138,11 +131,11 @@ func (*ArticlesController) Edit(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// 4. 读取成功，显示表单
-		view.Render(w, ArticlesFormData{
-			Title:  _article.Title,
-			Body:   _article.Body,
-			Article:    _article,
-			Errors: nil,
+		view.Render(w, view.D{
+			"Title":  _article.Title,
+			"Body":   _article.Body,
+			"Article":    _article,
+			"Errors": nil,
 		}, "articles.edit", "articles._form_field")
 	}
 }
@@ -190,11 +183,11 @@ func (*ArticlesController) Update(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			// 数据校验有错误
-			view.Render(w, ArticlesFormData{
-				Title:  title,
-				Body:   body,
-				Article:    _article,
-				Errors: errors,
+			view.Render(w, view.D{
+				"Title":  title,
+				"Body":   body,
+				"Article":    _article,
+				"Errors": errors,
 			})
 		}
 	}

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"goblog/app/http/controller"
+	"goblog/app/http/controllers"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,7 +10,7 @@ import (
 // RegisterWebRoutes 注册路由
 func RegisterWebRoutes(r *mux.Router) {
 	// 静态页面
-	pc := new(controller.PagesController)
+	pc := new(controllers.PagesController)
 	// 首页
 	r.HandleFunc("/", pc.Home).Methods("GET").Name("home")
 	// 关于我们
@@ -19,7 +19,7 @@ func RegisterWebRoutes(r *mux.Router) {
 	r.NotFoundHandler = http.HandlerFunc(pc.NotFound)
 
 	// 文章相关页面
-	ac := new(controller.ArticlesController)
+	ac := new(controllers.ArticlesController)
 	// 文章详情
 	r.HandleFunc("/articles/{id:[0-9]+}", ac.Show).Methods("GET").Name("articles.show")
 	// 文章列表
@@ -34,6 +34,11 @@ func RegisterWebRoutes(r *mux.Router) {
 	r.HandleFunc("/articles/{id:[0-9]+}", ac.Update).Methods("POST").Name("articles.update")
 	// 删除文章
 	r.HandleFunc("/articles/{id:[0-9]+}/delete", ac.Delete).Methods("POST").Name("articles.delete")
+
+	//用户认证
+	auc := new(controllers.AuthController)
+	r.HandleFunc("/auth/register", auc.Register).Methods("GET").Name("auth.register")
+	r.HandleFunc("/auth/do-register", auc.DoRegister).Methods("POST").Name("auth.doregister")
 
 	// 静态资源
 	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./public")))
