@@ -38,7 +38,9 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// 4. 读取成功
-		view.Render(w, _article, "articles.show")
+		view.Render(w, view.D{
+			"Article": _article,
+		}, "articles.show")
 	}
 }
 
@@ -53,7 +55,9 @@ func (*ArticlesController) Index(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "500 internal server error")
 	} else {
 		// 2. 加载模板
-		view.Render(w, articles, "articles.index")
+		view.Render(w, view.D{
+			"Articles": articles,
+		}, "articles.index")
 	}
 }
 
@@ -132,10 +136,10 @@ func (*ArticlesController) Edit(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// 4. 读取成功，显示表单
 		view.Render(w, view.D{
-			"Title":  _article.Title,
-			"Body":   _article.Body,
-			"Article":    _article,
-			"Errors": nil,
+			"Title":   _article.Title,
+			"Body":    _article.Body,
+			"Article": _article,
+			"Errors":  nil,
 		}, "articles.edit", "articles._form_field")
 	}
 }
@@ -184,10 +188,10 @@ func (*ArticlesController) Update(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// 数据校验有错误
 			view.Render(w, view.D{
-				"Title":  title,
-				"Body":   body,
-				"Article":    _article,
-				"Errors": errors,
+				"Title":   title,
+				"Body":    body,
+				"Article": _article,
+				"Errors":  errors,
 			})
 		}
 	}
