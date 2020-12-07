@@ -9,6 +9,7 @@ require (
 	github.com/gorilla/sessions v1.2.1
 	github.com/stretchr/testify v1.6.1
 	github.com/thedevsaddam/govalidator v1.9.10
+	golang.org/x/crypto v0.0.0-20201203163018-be400aefbc4c
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/gorm v1.20.7
 )
