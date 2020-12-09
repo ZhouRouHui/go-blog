@@ -19,9 +19,7 @@
     <list default="true" id="e735a136-ed97-46f4-9289-5cb8c5d67319" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/http/controllers/articles_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/http/controllers/articles_controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/auth/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/auth/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/articles/show.gohtml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/articles/show.gohtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/http/controllers/user_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/http/controllers/user_controller.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +108,7 @@
       <workItem from="1607076679212" duration="7802000" />
       <workItem from="1607310545956" duration="15886000" />
       <workItem from="1607390793695" duration="79000" />
-      <workItem from="1607390920513" duration="21434000" />
+      <workItem from="1607390920513" duration="21786000" />
     </task>
     <servers />
   </component>
@@ -197,10 +195,10 @@
     </state>
     <state width="750" height="535" key="javadoc.popup/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606897852356" />
     <state width="750" height="535" key="javadoc.popup/0.23.1440.877/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1606900978625" />
-    <state x="296" y="-1032" width="838" height="1032" key="search.everywhere.popup" timestamp="1607508725021">
+    <state x="296" y="-1032" width="838" height="1032" key="search.everywhere.popup" timestamp="1607509108701">
       <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="296" y="-1032" width="838" height="1032" key="search.everywhere.popup/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1607508725021" />
+    <state x="296" y="-1032" width="838" height="1032" key="search.everywhere.popup/0.0.1440.900/-245.-1080.1920.1080@-245.-1080.1920.1080" timestamp="1607509108701" />
     <state x="440" y="-636" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1607417225005">
       <screen x="-245" y="-1080" width="1920" height="1080" />
     </state>
