@@ -10,8 +10,8 @@ import (
 type Article struct {
 	models.BaseModel
 
-	Title string
-	Body  string
+	Title string `gorm:"type:varchar(255);not null;default '';comment:标题" valid:"title"`
+	Body  string `gorm:"type:varchar(255);not null;default '';comment:内容" valid:"body"`
 }
 
 // Link 生成文章链接
