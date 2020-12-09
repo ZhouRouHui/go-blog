@@ -20,7 +20,7 @@ func User() user.User {
 	uid := _getUID()
 	if len(uid) > 0 {
 		_user, err := user.Get(uid)
-		if err != nil {
+		if err == nil {
 			return _user
 		}
 	}
@@ -48,7 +48,6 @@ func Attempt(email, password string) error {
 
 	// 4. 登录用户，保存会话
 	session.Put("uid", _user.GetStringID())
-
 	return nil
 }
 

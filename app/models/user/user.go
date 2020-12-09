@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"goblog/app/models"
 	"goblog/pkg/route"
 )
@@ -19,7 +18,5 @@ type User struct {
 
 // Link 用户链接
 func (u User) Link() string {
-	url := route.Name2URL("users.show", "id", u.GetStringID())
-	fmt.Println(url)
-	return url
+	return route.Name2URL("users.show", "id", u.GetStringID())
 }
