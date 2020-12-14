@@ -32,11 +32,11 @@ func init() {
 		return nil
 	})
 
-	// max_cn:2
+	// max_cn:8
 	govalidator.AddCustomRule("max_cn", func(field string, rule string, message string, value interface{}) error {
 		valLength := utf8.RuneCountInString(value.(string))
 		l, _ := strconv.Atoi(strings.TrimPrefix(rule, "max_cn:")) // handle other error
-		if valLength < l {
+		if valLength > l {
 			if message != "" {
 				return errors.New(message)
 			}
